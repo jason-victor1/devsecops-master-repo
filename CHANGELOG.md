@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.0...v0.1.1) (2026-09-04)
+
+
+### Documentation
+
+* add production security validation compliance record ([#12](https://github.com/jason-victor1/devsecops-master-repo/issues/12)) ([08065ba](https://github.com/jason-victor1/devsecops-master-repo/commit/08065ba43a21e4f919ab68666de9f46aaee854a8))
+
 ## 0.1.0 (2026-09-04)
 
 
