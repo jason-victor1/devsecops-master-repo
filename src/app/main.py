@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
 import os
-from typing import Any, Dict
+from datetime import datetime, timezone
+from typing import Any
 from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, Security, status
@@ -35,7 +35,7 @@ class EventPayload(BaseModel):
         ..., min_length=2, max_length=128, description="Originating subsystem"
     )
     timestamp: datetime = Field(..., description="UTC ISO-8601 creation timestamp")
-    payload: Dict[str, Any] = Field(
+    payload: dict[str, Any] = Field(
         ..., description="Strict schema-compliant event payload dictionary"
     )
 
@@ -58,13 +58,13 @@ async def verify_api_key(
 
 
 @app.get("/healthz", status_code=status.HTTP_200_OK, tags=["Probes"])
-async def healthz() -> Dict[str, str]:
+async def healthz() -> dict[str, str]:
     """Kubernetes liveness probe endpoint."""
     return {"status": "healthy", "service": "event-ingestion-api"}
 
 
 @app.get("/ready", status_code=status.HTTP_200_OK, tags=["Probes"])
-async def ready() -> Dict[str, str]:
+async def ready() -> dict[str, str]:
     """Kubernetes readiness probe endpoint."""
     return {"status": "ready", "storage_layer": "connected"}
 
