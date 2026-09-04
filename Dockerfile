@@ -8,9 +8,10 @@ WORKDIR /build
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc=4:12.2.0-3 \
-    libc6-dev=2.36-9+deb12u9 \
+    gcc \
+    libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY src/requirements.txt .
