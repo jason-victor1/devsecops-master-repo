@@ -85,3 +85,6 @@ async def ingest_event(
         event_id=event.event_id,
         processed_at=datetime.now(timezone.utc),
     )
+
+
+# Service metadata schema v1
