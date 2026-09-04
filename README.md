@@ -26,8 +26,8 @@ The controls below are audited and verified against the production security base
 | **Container Runtime** | Hardened Non-Root Context | `Dockerfile` (`USER 10001:10001`) | **VERIFIED** |
 | **Kubernetes Security** | Immutable Root Filesystem | `infra/k8s/base/deployment.yaml` (`readOnlyRootFilesystem`) | **VERIFIED** |
 | **Cloud Storage** | Enforce KMS Encryption & TLS | `infra/terraform/modules/s3_storage` (`aws:kms`, HTTPS deny) | **VERIFIED** |
-| **Container Registry** | Immutable Image Tags | `infra/terraform/modules/ecr` (`IMMUTABLE` tag retention) | **VERIFIED** |
-| **Identity Federation** | Keyless GitHub Actions OIDC | `infra/terraform/modules/github_oidc` (`sub`/`aud` scoping) | **VERIFIED** |
+| **Container Registry**| Immutable Image Tags | `infra/terraform/modules/ecr` (`IMMUTABLE` tag retention) | **VERIFIED** |
+| **Identity Federation**| Keyless GitHub Actions OIDC | `infra/terraform/modules/github_oidc` (`sub`/`aud` scoping) | **VERIFIED** |
 | **SAST Integration** | Checkov & Trivy SARIF Exports | `.github/workflows/ci-security-lint.yml` (Code Scanning) | **VERIFIED** |
 
 Full verification details and command evidence are maintained in [SECURITY_VALIDATION.md](SECURITY_VALIDATION.md).
@@ -36,17 +36,72 @@ Full verification details and command evidence are maintained in [SECURITY_VALID
 
 ## Repository Layout
 
+    devsecops-master-repo/
+    ├── .editorconfig                      # Consistent editor configurations
+    ├── .gitattributes                     # Git line-ending and diff behavior
+    ├── .gitignore                         # Excluded local artifacts and caches
+    ├── .pre-commit-config.yaml            # Shift-left pre-commit hook hooks
+    ├── .tflint.hcl                        # TFLint ruleset and module configuration
+    ├── CONTRIBUTING.md                    # Contribution guidelines and standards
+    ├── Dockerfile                         # Multi-stage hardened non-root container
+    ├── README.md                          # Repository documentation and matrix
+    ├── SECURITY.md                        # Security policy and disclosure process
+    ├── SECURITY_VALIDATION.md             # Audited production compliance records
     ├── .github/
+    │   ├── CODEOWNERS                     # Mandatory code review requirements
+    │   ├── dependabot.yml                 # Automated dependency updates
+    │   ├── pull_request_template.md       # Standardized PR checklist
+    │   ├── ISSUE_TEMPLATE/
+    │   │   └── bug_report.yml             # Structured issue intake schema
     │   └── workflows/
-    │       ├── ci-security-lint.yml   # CI linting, unit tests, SAST, container scans
-    │       └── release-please.yml     # Automated semantic releases and changelogs
+    │       ├── ci-security-lint.yml       # Linting, unit tests, SAST, Trivy scans
+    │       └── release-please.yml         # Automated changelog and semantic release
     ├── infra/
-    │   ├── k8s/base/                  # Hardened Kubernetes base manifests
-    │   └── terraform/                 # Terraform modules (ECR, S3, OIDC, VPC)
-    ├── src/                           # Application source code and unit tests
-    ├── .pre-commit-config.yaml        # Local shift-left hook definitions
-    ├── Dockerfile                     # Multi-stage hardened non-root container build
-    └── SECURITY_VALIDATION.md         # Audited control verification records
+    │   ├── k8s/
+    │   │   ├── base/                      # Base manifests (deployment, service, kustomization)
+    │   │   │   ├── deployment.yaml
+    │   │   │   ├── kustomization.yaml
+    │   │   │   └── service.yaml
+    │   │   └── overlays/                  # Environment-specific overlays
+    │   │       ├── dev/
+    │   │       │   └── kustomization.yaml
+    │   │       └── prod/
+    │   │           └── kustomization.yaml
+    │   └── terraform/
+    │       ├── environments/              # Root deployment configurations
+    │       │   ├── dev/
+    │       │   │   ├── backend.tf
+    │       │   │   ├── main.tf
+    │       │   │   ├── outputs.tf
+    │       │   │   ├── variables.tf
+    │       │   │   └── versions.tf
+    │       │   └── prod/
+    │       │       ├── backend.tf
+    │       │       ├── main.tf
+    │       │       ├── outputs.tf
+    │       │       ├── variables.tf
+    │       │       └── versions.tf
+    │       └── modules/                   # Reusable infrastructure modules
+    │           ├── ecr/
+    │           │   ├── main.tf
+    │           │   ├── outputs.tf
+    │           │   └── variables.tf
+    │           ├── github_oidc/
+    │           │   ├── main.tf
+    │           │   ├── outputs.tf
+    │           │   └── variables.tf
+    │           └── s3_storage/
+    │               ├── main.tf
+    │               ├── outputs.tf
+    │               └── variables.tf
+    └── src/
+        ├── requirements.txt               # Pinned Python dependencies
+        ├── app/
+        │   ├── __init__.py
+        │   └── main.py                    # Application entrypoint
+        └── tests/
+            ├── __init__.py
+            └── test_main.py               # Unit test suites (90%+ coverage)
 
 ---
 
