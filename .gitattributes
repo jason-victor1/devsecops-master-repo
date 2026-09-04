@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+*.py text diff=python
+*.tf text
+*.hcl text
+*.yaml text
+*.yml text
+*.json text
+*.md text
+Dockerfile text
+
+# GitHub Linguist Overrides
+infra/k8s/** linguist-documentation=false
+infra/terraform/** linguist-detectable=true

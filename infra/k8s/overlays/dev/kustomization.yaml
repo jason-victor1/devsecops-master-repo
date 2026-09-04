@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Deployment
+      name: event-ingestion-api
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+images:
+  - name: event-ingestion-api
+    newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/event-ingestion-api-dev
+    newTag: dev-latest

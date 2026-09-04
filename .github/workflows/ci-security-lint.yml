@@ -1,0 +1,143 @@
+name: CI & Security Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+  security-events: write
+
+env:
+  AWS_REGION: us-east-1
+  ECR_ROLE_ARN: arn:aws:iam::123456789012:role/github-actions-dev-ingestion-role
+  ECR_REPOSITORY: event-ingestion-api-dev
+
+jobs:
+  lint-and-test:
+    name: Code Quality & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Application Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r src/requirements.txt
+
+      - name: Python Static Analysis (Ruff)
+        run: |
+          ruff check src/
+          ruff format --check src/
+
+      - name: Manifest Linting (Yamllint)
+        run: |
+          yamllint -d "{extends: default, rules: {line-length: {max: 120}, document-start: disable}}" .
+
+      - name: Dockerfile Security Audit (Hadolint)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: error
+
+      - name: Execute Pytest Suite with Coverage
+        run: |
+          pytest --cov=src/app src/tests/ --cov-report=xml --cov-fail-under=90
+
+  iac-sast:
+    name: IaC SAST Analysis (Checkov & Trivy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy IaC Scanner
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: config
+          scan-dir: infra/
+          format: sarif
+          output: trivy-iac-results.sarif
+          exit-code: 0
+          severity: HIGH,CRITICAL
+
+      - name: Run Checkov IaC Scanner
+        uses: bridgecrewio/checkov-action@v12.2810.0
+        with:
+          directory: infra/terraform
+          framework: terraform
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          soft_fail: true
+
+      - name: Upload Trivy IaC Scan SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-iac-results.sarif
+          category: trivy-iac
+
+      - name: Upload Checkov IaC Scan SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov-iac
+
+  build-scan-and-push:
+    name: OCI Build, Container Scan & ECR Push
+    needs: [lint-and-test, iac-sast]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to AWS via Keyless OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ECR_ROLE_ARN }}
+          role-session-name: GitHubActions-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Local Container Image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $REGISTRY/$ECR_REPOSITORY:latest .
+
+      - name: Container Image Vulnerability Scan (Trivy)
+        uses: aquasecurity/trivy-action@0.29.0
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL
+
+      - name: Push Container Images to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$ECR_REPOSITORY:latest

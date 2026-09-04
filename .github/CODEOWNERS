@@ -1,0 +1,18 @@
+# Global default owners
+
+- @enterprise-org/core-maintainers
+
+# Infrastructure as Code boundaries
+
+/infra/terraform/ @enterprise-org/devsecops-team
+/infra/k8s/ @enterprise-org/platform-engineers
+
+# Security controls and CI/CD pipelines
+
+/.github/ @enterprise-org/security-admins
+/SECURITY.md @enterprise-org/security-admins
+
+# Microservice application source
+
+/src/ @enterprise-org/app-maintainers
+/Dockerfile @enterprise-org/devsecops-team @enterprise-org/app-maintainers
