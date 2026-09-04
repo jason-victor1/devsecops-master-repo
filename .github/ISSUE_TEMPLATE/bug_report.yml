@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please complete this form accurately. Do **NOT** report active 0-day security exploits here; follow `SECURITY.md`.
+        Please complete this form accurately. Do **NOT** report active
+        0-day security exploits here; follow `SECURITY.md`.
   - type: textarea
     id: summary
     attributes:
