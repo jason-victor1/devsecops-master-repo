@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.1...v0.1.2) (2026-09-04)
+
+
+### Documentation
+
+* expand repository layout to reflect complete tree ([#16](https://github.com/jason-victor1/devsecops-master-repo/issues/16)) ([d4d72d6](https://github.com/jason-victor1/devsecops-master-repo/commit/d4d72d6d7de71eb868ad1b1b7e7ec2f769a8da6d))
+* update readme with verified security matrix and architecture ([#14](https://github.com/jason-victor1/devsecops-master-repo/issues/14)) ([fd1c9b2](https://github.com/jason-victor1/devsecops-master-repo/commit/fd1c9b2d3f75a98c7d475bf89816d069596f9fda))
+
 ## [0.1.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.0...v0.1.1) (2026-09-04)
 
 
