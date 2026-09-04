@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: "pip"
@@ -45,7 +45,7 @@ jobs:
           yamllint -d "{extends: default, rules: {line-length: {max: 120}, document-start: disable}}" .
 
       - name: Dockerfile Security Audit (Hadolint)
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: Dockerfile
           failure-threshold: error
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Run Trivy IaC Scanner
         uses: aquasecurity/trivy-action@master
@@ -72,7 +72,7 @@ jobs:
           severity: HIGH,CRITICAL
 
       - name: Run Checkov IaC Scanner
-        uses: bridgecrewio/checkov-action@v12.2810.0
+        uses: bridgecrewio/checkov-action@v12.3122.0
         with:
           directory: infra/terraform
           framework: terraform
@@ -81,14 +81,14 @@ jobs:
           soft_fail: true
 
       - name: Upload Trivy IaC Scan SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trivy-iac-results.sarif
           category: trivy-iac
 
       - name: Upload Checkov IaC Scan SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: checkov-results.sarif
@@ -101,10 +101,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Authenticate to AWS via Keyless OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ env.ECR_ROLE_ARN }}
           role-session-name: GitHubActions-${{ github.run_id }}
