@@ -1,0 +1,41 @@
+name: Feature Request
+description: Propose an architecture enhancement or new security control
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an enhancement to the DevSecOps pipeline.
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What architectural gap, operational limitation, or security friction does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Detailed architectural description of the changes.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other solutions or tools were evaluated?
+    validations:
+      required: false
+  - type: checkboxes
+    id: security-impact
+    attributes:
+      label: Security & Compliance Checklist
+      options:
+        - label: This change adheres to non-root container standards (UID 10001)
+          required: true
+        - label: This change introduces no plain-text credentials or static AWS keys
+          required: true
+        - label: Terraform changes maintain KMS encryption and TLS enforcement
+          required: true
