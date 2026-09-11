@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.2...v0.1.3) (2026-09-11)
+
+
+### Bug Fixes
+
+* **k8s:** enforce runtime default seccomp profile and resource limits ([#21](https://github.com/jason-victor1/devsecops-master-repo/issues/21)) ([fa074ab](https://github.com/jason-victor1/devsecops-master-repo/commit/fa074ab34f15705d2ebafa729d8a994d1ab75066))
+* **k8s:** specify explicit namespace and pin container image tag ([#19](https://github.com/jason-victor1/devsecops-master-repo/issues/19)) ([219dd02](https://github.com/jason-victor1/devsecops-master-repo/commit/219dd02eaf031d4588f762bbee0b75b225409cc5))
+
 ## [0.1.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.1...v0.1.2) (2026-09-04)
 
 
