@@ -5,5 +5,5 @@ pydantic-settings==2.15.0
 pytest==9.1.1
 httpx==0.28.1
 pytest-cov==7.1.0
-ruff==0.16.5
+ruff==0.16.6
 yamllint==1.38.0
