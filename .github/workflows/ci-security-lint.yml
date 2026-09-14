@@ -72,7 +72,7 @@ jobs:
           severity: HIGH,CRITICAL
 
       - name: Run Checkov IaC Scanner
-        uses: bridgecrewio/checkov-action@v12.3122.0
+        uses: bridgecrewio/checkov-action@v12.3123.0
         with:
           directory: infra/terraform
           framework: terraform
