@@ -29,6 +29,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# Patch base OS packages against upstream CVEs (zlib, pcre2, gcc-14-base, dash)
+# hadolint ignore=DL3005
+RUN apt-get update && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
+
 # Enforce secure UID/GID isolation
 RUN groupadd -g 10001 appgroup && \
     useradd -u 10001 -g appgroup -s /sbin/nologin -d /home/appuser -m appuser
