@@ -139,15 +139,43 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0
+
       - name: Build, Tag, and Push Container Image to ECR
+        id: build-image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: devsecops-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          if [ -f Dockerfile ]; then
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          else
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./src
-          fi
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+          # Capture immutable digest for signing
+          DIGEST=$(docker inspect --format="{{index .RepoDigests 0}}" $REGISTRY/$REPOSITORY:$IMAGE_TAG)
+          echo "IMAGE_DIGEST=$DIGEST" >> $GITHUB_OUTPUT
+          echo "IMAGE_URI=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
+
+      - name: Generate CycloneDX SBOM with Syft
+        run: |
+          syft ${{ steps.build-image.outputs.IMAGE_DIGEST }} -o cyclonedx-json=sbom.cyclonedx.json
+
+      - name: Keyless Sign Image and Attest SBOM via Cosign
+        env:
+          IMAGE_DIGEST: ${{ steps.build-image.outputs.IMAGE_DIGEST }}
+        run: |
+          # Keyless sign image using GitHub Actions OIDC identity
+          cosign sign --yes "$IMAGE_DIGEST"
+
+          # Attach CycloneDX SBOM as an in-toto attestation
+          cosign attest --yes --type cyclonedx --predicate sbom.cyclonedx.json "$IMAGE_DIGEST"
+
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyclonedx-sbom
+          path: sbom.cyclonedx.json
