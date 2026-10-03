@@ -1,0 +1,27 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-image-signatures
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verify-cosign-ecr-signature
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      verifyImages:
+        - imageReferences:
+            - "478076837031.dkr.ecr.us-east-1.amazonaws.com/devsecops-api:*"
+          imageRegistryCredentials:
+            secrets:
+              - regcred
+          attestors:
+            - entries:
+                - keyless:
+                    issuer: "https://token.actions.githubusercontent.com"
+                    subject: "https://github.com/jason-victor1/devsecops-master-repo/.*"
+                    rekor:
+                      url: "https://rekor.sigstore.dev"
