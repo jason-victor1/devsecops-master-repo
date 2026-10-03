@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.0...v0.4.1) (2026-10-03)
+
+
+### Documentation
+
+* add comprehensive DevSecOps architecture and verification runbook ([#36](https://github.com/jason-victor1/devsecops-master-repo/issues/36)) ([db5a640](https://github.com/jason-victor1/devsecops-master-repo/commit/db5a640a4d839de48e437701f5cc82c8dca1a218))
+
 ## [0.4.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.3.0...v0.4.0) (2026-10-03)
 
 
