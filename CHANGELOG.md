@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.3.0...v0.4.0) (2026-10-03)
+
+
+### Features
+
+* **terraform:** add EKS Pod Identity module and production Kyverno policy ([#34](https://github.com/jason-victor1/devsecops-master-repo/issues/34)) ([f60d7db](https://github.com/jason-victor1/devsecops-master-repo/commit/f60d7db48ce9e42d40ceb981428b32d10f2ca400))
+
 ## [0.3.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.2.0...v0.3.0) (2026-10-03)
 
 
