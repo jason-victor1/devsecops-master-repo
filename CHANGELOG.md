@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.3...v0.2.0) (2026-10-03)
+
+
+### Features
+
+* **ci:** add keyless AWS OIDC authentication and ECR container push ([#27](https://github.com/jason-victor1/devsecops-master-repo/issues/27)) ([d424d4d](https://github.com/jason-victor1/devsecops-master-repo/commit/d424d4d010b2eb66a0ef67b95ff8c0b8865bbaea))
+
 ## [0.1.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.2...v0.1.3) (2026-09-11)
 
 
