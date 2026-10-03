@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.2.0...v0.3.0) (2026-10-03)
+
+
+### Features
+
+* **ci:** add Syft CycloneDX SBOM and Cosign keyless artifact signing ([#31](https://github.com/jason-victor1/devsecops-master-repo/issues/31)) ([8150ef6](https://github.com/jason-victor1/devsecops-master-repo/commit/8150ef636cf80bc1fac36f0bcdec5233999ee42c))
+* **k8s:** add Kyverno image signature verification cluster policy ([#32](https://github.com/jason-victor1/devsecops-master-repo/issues/32)) ([21007f4](https://github.com/jason-victor1/devsecops-master-repo/commit/21007f40fd0929bafdf0a236c86ba34e07546f82))
+
+
+### Bug Fixes
+
+* **docker:** patch base OS packages in runtime stage to eliminate HIGH CVEs ([#29](https://github.com/jason-victor1/devsecops-master-repo/issues/29)) ([abd425d](https://github.com/jason-victor1/devsecops-master-repo/commit/abd425d2c0208f59f8ed1c5f2861d1f15c7c8dad))
+
 ## [0.2.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.1.3...v0.2.0) (2026-10-03)
 
 
