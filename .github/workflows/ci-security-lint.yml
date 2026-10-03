@@ -13,8 +13,8 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  ECR_ROLE_ARN: arn:aws:iam::123456789012:role/github-actions-dev-ingestion-role
-  ECR_REPOSITORY: event-ingestion-api-dev
+  ECR_ROLE_ARN: arn:aws:iam::478076837031:role/GitHubActions-ECR-Push-Role
+  ECR_REPOSITORY: devsecops-api
 
 jobs:
   lint-and-test:
