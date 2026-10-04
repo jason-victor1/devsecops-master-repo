@@ -1,0 +1,31 @@
+# Production Falcosidekick Alert Routing
+replicaCount: 2
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+config:
+  webhook:
+    address: ""
+    minimumpriority: "notice"
+  slack:
+    # Set via sealed secret or helm --set in deployment pipeline
+    webhookurl: ""
+    minimumpriority: "critical"
+    channel: "#sec-alerts"
+    username: "Falco-SOC-Engine"
+    icon: "https://falco.org/img/falco-logo.png"
+    outputformat: "all"
+  cloudwatchlogs:
+    # Routes events directly into AWS CloudWatch Log Group
+    loggroup: "/aws/eks/devsecops-prod-eks/falco-security-alerts"
+    minimumpriority: "warning"
+
+webui:
+  enabled: true
+  replicaCount: 1

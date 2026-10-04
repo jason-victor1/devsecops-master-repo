@@ -1,0 +1,58 @@
+# Production Kyverno Helm Values - High Availability & Zero-Trust
+replicaCount: 3
+
+podDisruptionBudget:
+  minAvailable: 2
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: kyverno
+        app.kubernetes.io/component: admission-controller
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+admissionController:
+  replicas: 3
+  serviceAccount:
+    create: true
+    name: kyverno-admission-controller
+  container:
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 10001
+      capabilities:
+        drop:
+          - ALL
+  webhook:
+    failurePolicy: Fail
+    matchConditions:
+      - name: exclude-kube-system
+        expression: "!(object.metadata.namespace == 'kube-system')"
+
+backgroundController:
+  replicas: 2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+cleanupController:
+  replicas: 2
+
+reportsController:
+  replicas: 2
