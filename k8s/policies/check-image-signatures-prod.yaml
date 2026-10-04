@@ -1,0 +1,37 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-image-signatures-prod
+  annotations:
+    policies.kyverno.io/title: Verify Production Container Signatures via Keyless Cosign
+    policies.kyverno.io/category: Supply Chain Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Enforces that all container images deployed from AWS ECR must have a valid
+      cryptographic signature logged in Sigstore Rekor signed by the authorized
+      GitHub Actions repository workflow.
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verify-ecr-cosign-signature
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - default
+                - prod
+      verifyImages:
+        - imageReferences:
+            - "*.dkr.ecr.*.amazonaws.com/event-ingestion-api-prod:*"
+            - "*.dkr.ecr.*.amazonaws.com/event-ingestion-api-prod@sha256:*"
+          attestors:
+            - entries:
+                - keyless:
+                    issuer: "https://token.actions.githubusercontent.com"
+                    subjectRegExp: "^https://github.com/jason-victor1/.*"
+                    rekor:
+                      url: "https://rekor.sigstore.dev"
