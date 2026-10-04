@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.2...v0.4.3) (2026-10-04)
+
+
+### Bug Fixes
+
+* **ci:** gate ECR build-and-push job to main branch pushes ([#42](https://github.com/jason-victor1/devsecops-master-repo/issues/42)) ([902a38e](https://github.com/jason-victor1/devsecops-master-repo/commit/902a38e6a1ad077afb2c13aa1d0e0e0abd1e7798))
+
 ## [0.4.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.1...v0.4.2) (2026-10-04)
 
 
