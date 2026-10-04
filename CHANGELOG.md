@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.5.0...v0.6.0) (2026-10-04)
+
+
+### Features
+
+* **k8s:** add production Helm values and Kyverno verification policy for Phase 2 ([#48](https://github.com/jason-victor1/devsecops-master-repo/issues/48)) ([a29d47f](https://github.com/jason-victor1/devsecops-master-repo/commit/a29d47f2489538b90774af50daf07f2d0aa7fd00))
+
 ## [0.5.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.4...v0.5.0) (2026-10-04)
 
 
