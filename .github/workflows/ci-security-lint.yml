@@ -72,7 +72,7 @@ jobs:
           severity: HIGH,CRITICAL
 
       - name: Run Checkov IaC Scanner
-        uses: bridgecrewio/checkov-action@v12.3122.0
+        uses: bridgecrewio/checkov-action@v12.3128.0
         with:
           directory: infra/terraform
           framework: terraform
@@ -123,10 +123,10 @@ jobs:
     needs: [lint-and-test, iac-sast]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure AWS Credentials via OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
@@ -137,7 +137,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3
@@ -175,7 +175,7 @@ jobs:
           cosign attest --yes --type cyclonedx --predicate sbom.cyclonedx.json "$IMAGE_DIGEST"
 
       - name: Upload SBOM Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cyclonedx-sbom
           path: sbom.cyclonedx.json
