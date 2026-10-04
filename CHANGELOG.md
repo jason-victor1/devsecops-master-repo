@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.1...v0.4.2) (2026-10-04)
+
+
+### Documentation
+
+* clean code fence formatting and expand complete devsecops runbook ([#38](https://github.com/jason-victor1/devsecops-master-repo/issues/38)) ([af80487](https://github.com/jason-victor1/devsecops-master-repo/commit/af80487a6faa9362ddd8ad199e91f966b87347f6))
+
 ## [0.4.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.0...v0.4.1) (2026-10-03)
 
 
