@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.3...v0.4.4) (2026-10-04)
+
+
+### Documentation
+
+* add system design architecture and threat model specification ([#44](https://github.com/jason-victor1/devsecops-master-repo/issues/44)) ([5d62a88](https://github.com/jason-victor1/devsecops-master-repo/commit/5d62a882703d1e99990b3adeee429868fd6a3834))
+
 ## [0.4.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.2...v0.4.3) (2026-10-04)
 
 
