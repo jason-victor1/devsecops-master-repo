@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.4...v0.5.0) (2026-10-04)
+
+
+### Features
+
+* **infra:** add EKS 1.31, multi-AZ VPC, and Pod Identity modules for Phase 2 ([#46](https://github.com/jason-victor1/devsecops-master-repo/issues/46)) ([c9ac792](https://github.com/jason-victor1/devsecops-master-repo/commit/c9ac792698d40ef96e478a03d187a04198ba660f))
+
 ## [0.4.4](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.4.3...v0.4.4) (2026-10-04)
 
 
