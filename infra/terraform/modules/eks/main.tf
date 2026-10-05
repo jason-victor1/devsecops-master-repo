@@ -32,6 +32,9 @@ resource "aws_kms_key" "eks_secrets" {
 # -----------------------------------------------------------------------------
 # KMS CMK for Node EBS Volume Encryption (CKV_AWS_340)
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# KMS CMK for Node EBS Volume Encryption (CKV_AWS_340)
+# -----------------------------------------------------------------------------
 resource "aws_kms_key" "ebs" {
   description             = "KMS CMK for EKS worker node EBS root volumes"
   deletion_window_in_days = 30
@@ -47,6 +50,52 @@ resource "aws_kms_key" "ebs" {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
         Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowAutoScalingServiceLinkedRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowAttachmentOfPersistentResources"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+        }
+        Action = [
+          "kms:CreateGrant"
+        ]
+        Resource = "*"
+        Condition = {
+          Bool = {
+            "kms:GrantIsForAWSResource" = "true"
+          }
+        }
+      },
+      {
+        Sid    = "AllowNodeRoleAccess"
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.node.arn
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
         Resource = "*"
       }
     ]
@@ -99,7 +148,8 @@ resource "aws_eks_cluster" "this" {
   vpc_config {
     subnet_ids              = var.private_subnet_ids
     endpoint_private_access = true
-    endpoint_public_access  = false
+    endpoint_public_access  = var.cluster_endpoint_public_access
+    public_access_cidrs     = var.cluster_endpoint_public_access_cidrs
   }
 
   enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
