@@ -51,3 +51,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "cluster_endpoint_public_access" {
+  description = "Indicates whether the Amazon EKS public API server endpoint is enabled"
+  type        = bool
+  default     = true
+}
+
+variable "cluster_endpoint_public_access_cidrs" {
+  description = "List of CIDR blocks that can access the Amazon EKS public API server endpoint"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
