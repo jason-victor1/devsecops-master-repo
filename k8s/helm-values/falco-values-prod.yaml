@@ -1,13 +1,11 @@
-# Production Falco Helm Values - Modern eBPF Engine on AL2023
 driver:
   kind: modern_ebpf
-
 falco:
   modern_ebpf:
     leastPrivileged: true
-  rules_file:
-    - /etc/falco/falco_rules.yaml
-    - /etc/falco/rules.d/k8s-sa-token.yaml
+  rules_files:
+  - /etc/falco/falco_rules.yaml
+  - /etc/falco/rules.d/k8s-sa-token.yaml
   json_output: true
   file_output:
     enabled: false
@@ -15,7 +13,6 @@ falco:
     enabled: true
   log_stderr: true
   log_level: notice
-
 resources:
   limits:
     cpu: 1000m
@@ -23,25 +20,19 @@ resources:
   requests:
     cpu: 200m
     memory: 512Mi
-
-# Mount custom token detection rule into rules.d
 customRules:
-  k8s-sa-token.yaml: |-
-    - rule: Unauthorized K8s ServiceAccount Token Read
-      desc: Detect attempts to inspect or harvest Kubernetes ServiceAccount JWT credentials
-      condition: >
-        open_read and
-        fd.name startswith "/var/run/secrets/kubernetes.io/serviceaccount/token" and
-        not proc.name in (aws-k8s-agent, kube-proxy, amazon-ssm-agent)
-      output: >
-        CRITICAL: Pod ServiceAccount token access attempt
-        (user=%user.name user_id=%user.uid proc=%proc.name cmdline=%proc.cmdline
-        file=%fd.name container_id=%container.id container_name=%container.name
-        image=%container.image.repository:%container.image.tag)
-      priority: CRITICAL
-      tags: [mitre_credential_access, t1552, kubernetes, runtime_security]
-
+  k8s-sa-token.yaml: "- rule: Unauthorized K8s ServiceAccount Token Read\n  desc:\
+    \ Detect attempts to inspect or harvest Kubernetes ServiceAccount JWT credentials\n\
+    \  condition: >\n    open_read and\n    fd.name startswith \"/var/run/secrets/kubernetes.io/serviceaccount/token\"\
+    \ and\n    not proc.name in (aws-k8s-agent, kube-proxy, amazon-ssm-agent)\n  output:\
+    \ >\n    CRITICAL: Pod ServiceAccount token access attempt\n    (user=%user.name\
+    \ user_id=%user.uid proc=%proc.name cmdline=%proc.cmdline\n    file=%fd.name container_id=%container.id\
+    \ container_name=%container.name\n    image=%container.image.repository:%container.image.tag)\n\
+    \  priority: CRITICAL\n  tags: [mitre_credential_access, t1552, kubernetes, runtime_security]"
 falcosidekick:
   enabled: true
   webui:
-    enabled: true
+    redis:
+      storage:
+        enabled: false
+    enabled: false
