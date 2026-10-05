@@ -1,0 +1,81 @@
+name: Build, Sign, and Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'k8s/manifests/**'
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # Required for Sigstore keyless signing & AWS OIDC
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: 478076837031.dkr.ecr.us-east-1.amazonaws.com/event-ingestion-api-prod
+
+jobs:
+  build-sign-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::478076837031:role/github-actions-devsecops-deployer
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.8.1
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0.18.0
+
+      - name: Build and push container image
+        id: build-image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ env.ECR_REPOSITORY }}:${{ github.sha }},${{ env.ECR_REPOSITORY }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Sign container image with Cosign (Keyless)
+        run: |
+          echo "Signing image digest: ${{ env.ECR_REPOSITORY }}@${{ steps.build-image.outputs.digest }}"
+          cosign sign --yes \
+            "${{ env.ECR_REPOSITORY }}@${{ steps.build-image.outputs.digest }}"
+
+      - name: Generate SBOM and create Cosign attestation
+        run: |
+          syft "${{ env.ECR_REPOSITORY }}@${{ steps.build-image.outputs.digest }}" -o cyclonedx-json=sbom.json
+          cosign attest --yes \
+            --predicate sbom.json \
+            --type cyclonedx \
+            "${{ env.ECR_REPOSITORY }}@${{ steps.build-image.outputs.digest }}"
+
+      - name: Verify Kyverno Admission Deployment in Prod
+        run: |
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name devsecops-prod-eks
+          kubectl create namespace prod --dry-run=client -o yaml | kubectl apply -f -
+
+          # Deploy using verified digest
+          kubectl create deployment event-ingestion-api \
+            --image="${{ env.ECR_REPOSITORY }}@${{ steps.build-image.outputs.digest }}" \
+            -n prod --dry-run=client -o yaml | kubectl apply -f -
+
+          kubectl rollout status deployment/event-ingestion-api -n prod --timeout=120s
