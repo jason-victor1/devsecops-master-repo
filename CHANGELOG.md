@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.2...v0.6.3) (2026-10-07)
+
+
+### Bug Fixes
+
+* **eks:** enforce private-only cluster endpoint access for prod ([#63](https://github.com/jason-victor1/devsecops-master-repo/issues/63)) ([aec3196](https://github.com/jason-victor1/devsecops-master-repo/commit/aec3196c2d53ef65176a03f5096fad175d341f7b))
+* **eks:** set zero-trust module defaults and restrict prod api endpoint cidr ([#61](https://github.com/jason-victor1/devsecops-master-repo/issues/61)) ([15b59a7](https://github.com/jason-victor1/devsecops-master-repo/commit/15b59a7e7ae29ee683bfd4d627ad110698ece109))
+
 ## [0.6.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.1...v0.6.2) (2026-10-07)
 
 
