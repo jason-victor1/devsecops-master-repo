@@ -30,6 +30,8 @@ customRules:
     \ container_name=%container.name\n    image=%container.image.repository:%container.image.tag)\n\
     \  priority: CRITICAL\n  tags: [mitre_credential_access, t1552, kubernetes, runtime_security]"
 falcosidekick:
+  image:
+    tag: "2.31.1"
   enabled: true
   webui:
     redis:
