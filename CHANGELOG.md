@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.0...v0.6.1) (2026-10-07)
+
+
+### Bug Fixes
+
+* **falco:** pin falcosidekick to 2.31.1 for AWS SDK v1 IRSA compatibility ([#58](https://github.com/jason-victor1/devsecops-master-repo/issues/58)) ([d01b1e7](https://github.com/jason-victor1/devsecops-master-repo/commit/d01b1e72779c26e84669abda5b45be8746baaa96))
+* **infra:** add AutoScaling EBS KMS permissions and expose public endpoint controls ([#53](https://github.com/jason-victor1/devsecops-master-repo/issues/53)) ([f11d61d](https://github.com/jason-victor1/devsecops-master-repo/commit/f11d61d52558417e3590c34217a047f048839608))
+
 ## [0.6.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.5.0...v0.6.0) (2026-10-04)
 
 
