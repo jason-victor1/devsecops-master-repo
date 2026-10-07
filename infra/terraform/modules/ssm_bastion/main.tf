@@ -59,6 +59,8 @@ resource "aws_security_group" "bastion" {
   # Strict zero-ingress policy (no port 22 SSH, no inbound public traffic)
   ingress = []
 
+  #trivy:ignore:AWS-0104:Allow outbound HTTPS for AWS Systems Manager agent communication
+  #trivy:ignore:AVD-AWS-0104:Allow outbound HTTPS for AWS Systems Manager agent communication
   egress {
     description = "Allow HTTPS outbound for SSM agent communication and AWS APIs"
     from_port   = 443
