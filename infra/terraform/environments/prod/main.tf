@@ -38,8 +38,8 @@ module "eks" {
   kubernetes_version                   = "1.31"
   environment                          = "prod"
   private_subnet_ids                   = module.vpc.private_subnet_ids
-  cluster_endpoint_public_access       = true
-  cluster_endpoint_public_access_cidrs = ["172.56.197.51/32"]
+  cluster_endpoint_public_access       = false
+  cluster_endpoint_public_access_cidrs = []
   tags = {
     CostCenter = "ProductionWorkloads"
   }
