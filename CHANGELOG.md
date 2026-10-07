@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.1...v0.6.2) (2026-10-07)
+
+
+### Bug Fixes
+
+* **falco:** adjust sa token rule for projected paths and whitelist kyverno ([#59](https://github.com/jason-victor1/devsecops-master-repo/issues/59)) ([8b482bc](https://github.com/jason-victor1/devsecops-master-repo/commit/8b482bc873c8d15efdd4e72a635968babb663c3f))
+
 ## [0.6.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.0...v0.6.1) (2026-10-07)
 
 
