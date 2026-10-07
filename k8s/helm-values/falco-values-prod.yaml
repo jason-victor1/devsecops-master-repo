@@ -23,8 +23,11 @@ resources:
 customRules:
   k8s-sa-token.yaml: "- rule: Unauthorized K8s ServiceAccount Token Read\n  desc:\
     \ Detect attempts to inspect or harvest Kubernetes ServiceAccount JWT credentials\n\
-    \  condition: >\n    open_read and\n    fd.name startswith \"/var/run/secrets/kubernetes.io/serviceaccount/token\"\
-    \ and\n    not proc.name in (aws-k8s-agent, kube-proxy, amazon-ssm-agent)\n  output:\
+    \  condition: >\n    open_read and\n\
+    \    fd.name startswith \"/var/run/secrets/kubernetes.io/serviceaccount\" and\n\
+    \    fd.name endswith \"/token\" and\n\
+    \    not proc.name in (aws-k8s-agent, kube-proxy, amazon-ssm-agent,\n\
+    \    kyverno, background-cont, cleanup-control)\n  output:\
     \ >\n    CRITICAL: Pod ServiceAccount token access attempt\n    (user=%user.name\
     \ user_id=%user.uid proc=%proc.name cmdline=%proc.cmdline\n    file=%fd.name container_id=%container.id\
     \ container_name=%container.name\n    image=%container.image.repository:%container.image.tag)\n\
