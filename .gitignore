@@ -67,3 +67,5 @@ Thumbs.db
 *.key
 *.pub
 !~/.ssh/*.pub
+*.tfplan
+tfplan
