@@ -4,8 +4,8 @@ falco:
   modern_ebpf:
     leastPrivileged: true
   rules_files:
-  - /etc/falco/falco_rules.yaml
-  - /etc/falco/rules.d/k8s-sa-token.yaml
+    - /etc/falco/falco_rules.yaml
+    - /etc/falco/rules.d/k8s-sa-token.yaml
   json_output: true
   file_output:
     enabled: false
