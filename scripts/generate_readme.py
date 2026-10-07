@@ -1,4 +1,8 @@
-# Enterprise DevSecOps Platform: Hardened EKS 1.31 Architecture
+#!/usr/bin/env python3
+
+TICK = "```"
+
+content = f"""# Enterprise DevSecOps Platform: Hardened EKS 1.31 Architecture
 
 [![CI & Security Pipeline](https://github.com/jason-victor1/devsecops-master-repo/actions/workflows/ci-security-lint.yml/badge.svg)](https://github.com/jason-victor1/devsecops-master-repo/actions/workflows/ci-security-lint.yml)
 [![Release Please](https://github.com/jason-victor1/devsecops-master-repo/actions/workflows/release-please.yml/badge.svg)](https://github.com/jason-victor1/devsecops-master-repo/actions/workflows/release-please.yml)
@@ -12,7 +16,7 @@ A production-grade, zero-trust Amazon EKS (v1.31) infrastructure platform built 
 
 ## Architecture Overview
 
-```
+{TICK}
                                       AWS CLOUD (us-east-1)
                      ┌─────────────────────────────────────────────────────────┐
                      │ Multi-AZ VPC (Private & Public Subnets, NAT Gateways)   │
@@ -58,7 +62,7 @@ A production-grade, zero-trust Amazon EKS (v1.31) infrastructure platform built 
                       │ AWS CloudWatch Logs                                 │
                       │ /aws/eks/devsecops-prod-eks/falco-security-alerts   │
                       └─────────────────────────────────────────────────────┘
-```
+{TICK}
 
 ---
 
@@ -90,30 +94,30 @@ Live threat simulations confirm real-time detection and logging:
 ### Scenario A: Unauthorized Credential Harvesting
 * **Trigger:** Attempted read of `/etc/shadow` within a container.
 * **Falco Detection:**
-```json
-{
+{TICK}json
+{{
   "priority": "Warning",
   "rule": "Read sensitive file untrusted",
   "output": "Sensitive file opened for reading by non-trusted program (file=/etc/shadow program=cat)"
-}
-```
+}}
+{TICK}
 
 ### Scenario B: ServiceAccount Token Tampering
 * **Trigger:** Access to the projected ServiceAccount token directory.
 * **Falco Detection:**
-```json
-{
+{TICK}json
+{{
   "priority": "Critical",
   "rule": "Read sensitive file untrusted",
   "output": "Access to projected serviceaccount token detected (file=/var/run/secrets/kubernetes.io/serviceaccount/..data/token)"
-}
-```
+}}
+{TICK}
 
 ---
 
 ## Repository Structure
 
-```
+{TICK}
 ├── .github/workflows/          # CI/CD: Checkov, Trivy, Linter, Release Please
 ├── docs/                       # Threat models and architectural ADRs
 ├── infra/terraform/
@@ -124,7 +128,7 @@ Live threat simulations confirm real-time detection and logging:
 │   └── environments/prod/      # Production environment definition
 ├── k8s/                        # Helm values and Kyverno cluster policies
 └── scripts/                    # SSM tunneling, verification harnesses, cost scripts
-```
+{TICK}
 
 ---
 
@@ -136,10 +140,16 @@ Live threat simulations confirm real-time detection and logging:
 * Session Manager Plugin for AWS CLI
 
 ### Connecting via Private SSM Tunnel
-```bash
+{TICK}bash
 # 1. Start the encrypted SSM WebSocket tunnel to the private control plane
 ./scripts/start-eks-private-tunnel.sh
 
 # 2. Access the cluster in a separate terminal
 kubectl --server=https://localhost:6443 get nodes
-```
+{TICK}
+"""
+
+with open("README.md", "w") as f:
+    f.write(content.strip() + "\n")
+
+print("README.md generated successfully with valid code fences.")
