@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.7.0...v0.7.1) (2026-10-07)
+
+
+### Documentation
+
+* **adr:** add architecture decision records 0001-0003 and empirical validation ledger ([#67](https://github.com/jason-victor1/devsecops-master-repo/issues/67)) ([8f7167b](https://github.com/jason-victor1/devsecops-master-repo/commit/8f7167b58fa8251035a3a6943ae037c8fad7cb5d))
+
 ## [0.7.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.3...v0.7.0) (2026-10-07)
 
 
