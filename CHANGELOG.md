@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.3...v0.7.0) (2026-10-07)
+
+
+### Features
+
+* **ssm:** add zero-trust private bastion module and ssm tunneling script ([#64](https://github.com/jason-victor1/devsecops-master-repo/issues/64)) ([e447f6d](https://github.com/jason-victor1/devsecops-master-repo/commit/e447f6d8225d8cdcfcc77c2fd4fc4656468b5e84))
+
+
+### Documentation
+
+* enrich README with architecture diagram, zero-trust ssm guide, and verification proof ([#66](https://github.com/jason-victor1/devsecops-master-repo/issues/66)) ([8969093](https://github.com/jason-victor1/devsecops-master-repo/commit/8969093cc12345c30ad08ec474a09cc245a19765))
+
 ## [0.6.3](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.6.2...v0.6.3) (2026-10-07)
 
 
