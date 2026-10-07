@@ -93,6 +93,8 @@ resource "aws_instance" "bastion" {
   iam_instance_profile = aws_iam_instance_profile.bastion.name
 
   vpc_security_group_ids = [aws_security_group.bastion.id]
+  monitoring             = true
+  ebs_optimized          = true
 
   metadata_options {
     http_endpoint               = "enabled"
