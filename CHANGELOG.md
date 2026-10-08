@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.7.1...v0.8.0) (2026-10-08)
+
+
+### Features
+
+* **security:** enforce kyverno cosign sbom attestation and imds egress isolation ([#69](https://github.com/jason-victor1/devsecops-master-repo/issues/69)) ([5870dcc](https://github.com/jason-victor1/devsecops-master-repo/commit/5870dcc41c42366c3e5f57d9a647754c7f3cc829))
+
 ## [0.7.1](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.7.0...v0.7.1) (2026-10-07)
 
 
