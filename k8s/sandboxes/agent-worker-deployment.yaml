@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-worker
+  namespace: prod
+  labels:
+    app.kubernetes.io/name: agent-worker
+    app.kubernetes.io/part-of: autonomous-sandbox
+    security.kubernetes.io/tier: untrusted-workload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: agent-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: agent-worker
+        security.kubernetes.io/tier: untrusted-workload
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: worker
+          image: 478076837031.dkr.ecr.us-east-1.amazonaws.com/agent-worker:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          volumeMounts:
+            - name: ephemeral-storage
+              mountPath: /tmp
+      volumes:
+        - name: ephemeral-storage
+          emptyDir:
+            sizeLimit: 128Mi
