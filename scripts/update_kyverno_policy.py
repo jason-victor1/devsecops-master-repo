@@ -1,4 +1,6 @@
-apiVersion: kyverno.io/v1
+#!/usr/bin/env python3
+
+policy_content = """apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: check-image-signatures-prod
@@ -46,3 +48,9 @@ spec:
                         subjectRegExp: "^https://github.com/jason-victor1/.*"
                         rekor:
                           url: "https://rekor.sigstore.dev"
+"""
+
+with open("k8s/policies/check-image-signatures-prod.yaml", "w") as f:
+    f.write(policy_content.strip() + "\n")
+
+print("Kyverno ClusterPolicy updated with dual Cosign signature and SBOM attestation verification.")
