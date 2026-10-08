@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.8.0...v0.9.0) (2026-10-08)
+
+
+### Features
+
+* **ai-sec:** add hardened agentic sandbox deployment, imds netpol, and rego tool gate ([#71](https://github.com/jason-victor1/devsecops-master-repo/issues/71)) ([7773d61](https://github.com/jason-victor1/devsecops-master-repo/commit/7773d61028444171451ba2d6d9b5375288b72869))
+
 ## [0.8.0](https://github.com/jason-victor1/devsecops-master-repo/compare/v0.7.1...v0.8.0) (2026-10-08)
 
 
